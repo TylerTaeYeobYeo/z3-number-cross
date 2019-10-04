@@ -1,0 +1,1 @@
+gcc -o answer.out hw1.c 
