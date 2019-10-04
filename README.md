@@ -56,3 +56,10 @@ so the black cells are {5,1,3} and others are white cells.
 1. gcc hw1.c
 2. ./a.out < input
 ```
+
+### Or
+
+```
+1. ./Makefile
+2. ./answer.out < input
+```
