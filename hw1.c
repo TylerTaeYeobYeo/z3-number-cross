@@ -74,7 +74,11 @@ int main(){
       fclose(fp);
 
       FILE *out = popen("z3 formula","r");
-      fscanf(out, "%s %s",buf,buf);
+      fscanf(fp, "%s", buf);
+      if(strcmp(buf,"unsat")==0){
+            printf("\nNo solution\n");
+            return -1;
+      }
       int index = 0;
       while(!feof(out)){
             fscanf(out,"%s",buf);
