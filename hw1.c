@@ -3,8 +3,7 @@
 #include <string.h>
 
 int paint[51][51];
-int val[2501];
-
+int val[51][51];
 int main(){
       char buf[128] = "";
       char temp[128] = "";
@@ -74,30 +73,33 @@ int main(){
       fprintf(fp,"(check-sat)\n(get-model)\n");
       fclose(fp);
 
-      // FILE *out = popen("z3 formula","r");
-      // fscanf(out, "%s %s",buf,buf);
-      // int index = 0;
-      // while(!feof(out)){
-      //       int flag = 0;
-      //       fscanf(out,"%s",buf);
-      //       fscanf(out,"%s",buf);
-      //       switch(buf[0]){
-      //             // case 'b':
-      //             // case 'w':
-      //             // case 'B':
-      //             case 'p': flag = 1;
-      //       }
-      //       fscanf(out,"%s",buf);
-      //       fscanf(out,"%s",buf);
-      //       fscanf(out,"%s",buf);
-      //       if(flag==1){
-      //             val[index++] = atoi(buf);
-      //       }
-      // }
-      // pclose(out);
-      // int idx = 0;
-      // while(idx<index){
-      //       printf("%d ", val[idx]);
-      // }
+      FILE *out = popen("z3 formula","r");
+      fscanf(out, "%s %s",buf,buf);
+      int index = 0;
+      while(!feof(out)){
+            fscanf(out,"%s",buf);
+            fscanf(out,"%s",buf);
+            if(buf[0] == 'f') break;
+            int num[2] = {0,0}, idx = 0;
+            int len = strlen(buf);
+            for(int i = 1; i < len; i++)
+                  if(buf[i]=='_') idx++;
+                  else num[idx] = num[idx]*10 + buf[i] - '0';
+            fscanf(out,"%s",buf);
+            fscanf(out,"%s",buf);
+            fscanf(out,"%s",buf);
+            val[num[0]][num[1]] = atoi(buf);
+      }
+      pclose(out);
+
+      out = fopen("output","w");
+      for(int i = 0; i< N;i++){
+            for(int j =0;j<M;j++){
+                  fprintf(out,"%d ",val[i][j]);
+                  printf("%d ",val[i][j]);
+            }
+            fprintf(fp,"\n");printf("\n");
+      }
+      fclose(out);
       return 0; 
 }
